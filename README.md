@@ -20,7 +20,7 @@ To set up a fresh environment from scratch:
 python -m venv .venv
 
 # 2. Activate the virtual environment in PowerShell:
-.\.venv\Scripts\Activate.ps1
+.\.venv\Scripts\activate
 
 # 3. Install core dependencies from requirements.txt:
 pip install -r requirements.txt
