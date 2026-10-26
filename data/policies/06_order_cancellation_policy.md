@@ -1,0 +1,3 @@
+# Nykaa Policy: Order Cancellation Policy
+
+Customers may cancel placed orders without incurring any financial cancellation penalties prior to dispatch. Self-service cancellation is accessible through the 'My Orders' section on the Nykaa website or mobile app as long as the status displays 'Placed' or 'Processing'. Once a consignment transitions to 'Shipped' status, the automated cancellation option is disabled because the parcel has been tendered to third-party logistics. In cases where shipment has already occurred, customers should refuse parcel acceptance upon courier delivery arrival, triggering automated return-to-origin (RTO) and initiating full refund processing upon return verification.

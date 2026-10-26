@@ -1,0 +1,3 @@
+# Nykaa Policy: Reverse-Pickup Eligibility
+
+Complimentary reverse-pickup service is provided for eligible returns across more than 19,000 serviceable postal pin codes in India. Once a return or exchange request is authorized, our courier associate will attempt doorstep pickup within 24 to 48 business hours. Items must be handed over in original retail packaging with intact tags, invoices, and any complimentary promotional gifts included in the original shipment. For non-serviceable pin codes where direct pickup is unavailable, customers are advised to self-ship via speed post, and Nykaa reimburses up to ₹150 in shipping vouchers upon receipt of proof of parcel dispatch.

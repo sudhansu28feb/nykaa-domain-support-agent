@@ -1,0 +1,3 @@
+# Nykaa Policy: Damaged-Item Claim Process
+
+Customers receiving a visibly damaged consignment, broken beauty container, or tampered shipping box must file an incident claim within 48 hours of parcel delivery. Claims must be submitted through the Nykaa Help Center by providing clear photographic or video evidence showing the damaged merchandise alongside the outer cardboard shipping label. Claims submitted after the mandatory 48-hour reporting window are automatically rejected due to courier insurance stipulations. For high-value cosmetic incidents exceeding ₹2,000, our logistics assurance team performs a formal courier manifest investigation before approving replacement or instant store refund.

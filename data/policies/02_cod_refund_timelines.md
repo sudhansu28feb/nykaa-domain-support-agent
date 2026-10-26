@@ -1,0 +1,3 @@
+# Nykaa Policy: Cash on Delivery (COD) Refund Timelines
+
+Refunds for orders fulfilled through Cash on Delivery (COD) payment cannot be remitted back in cash directly by courier personnel. Upon successful return pickup and quality inspection at the warehouse, customers receive an automated refund link via SMS and registered email within 24 business hours. Customers may choose an instant refund credited to their Nykaa Wallet or submit verified bank account details (IFSC code and account number) for direct NEFT disbursement. Bank transfers are typically processed within 2 to 3 business days depending on inter-bank clearing cycles.

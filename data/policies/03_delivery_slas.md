@@ -1,0 +1,3 @@
+# Nykaa Policy: Delivery Service Level Agreements (SLAs)
+
+Standard domestic orders are fulfilled across India with reliable courier partners adhering to regional service level agreements. Shipments to Tier 1 metro regions (including Mumbai, Delhi NCR, Bengaluru, Hyderabad, and Chennai) are delivered within 2 to 3 business days from warehouse dispatch. Deliveries to Tier 2 and Tier 3 cities require 4 to 6 business days, while shipments to remote destinations or Jammu & Kashmir and North East states take up to 7 to 10 business days. Nykaa provides free standard shipping on all orders valued at ₹499 and above, whereas orders below ₹499 incur a flat nominal shipping charge of ₹70.

@@ -1,0 +1,3 @@
+# Nykaa Policy: Size-Exchange Policy
+
+Nykaa offers complimentary doorstep size exchanges for eligible footwear and apparel orders within 15 calendar days of initial delivery. Exchanges are limited to alternative sizes of the exact same product style and colorway, subject to warehouse inventory availability. Items requested for size exchange must be unworn, unwashed, unaltered, and submitted with original tags and brand packaging intact. To ensure an effortless customer experience, our courier partner provides simultaneous exchange where the replacement item is delivered as the existing unit is collected.

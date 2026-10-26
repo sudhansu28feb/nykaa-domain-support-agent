@@ -1,0 +1,3 @@
+# Nykaa Policy: Return Window by Product Category
+
+Nykaa maintains category-specific return windows to balance customer flexibility with product hygiene standards. Beauty and cosmetics items can be returned within 15 calendar days of delivery only if seals, shrink-wrap, and original packaging remain completely unopened. Apparel and footwear items are eligible for returns or replacements within 15 calendar days of delivery provided original tags, brand boxes, and unworn conditions are maintained. Home decor products must be returned within 10 calendar days in original condition, while electronic styling appliances are eligible for a 7-day replacement window against verified technical defects.

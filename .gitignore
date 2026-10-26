@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE / Editor artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Vector store database & model caches (local storage)
+data/chroma_db/
+chroma_db/
+.cache/
+huggingface/
+
+# Test & runtime artifacts
+.coverage
+.pytest_cache/
+htmlcov/
+*.log
+scratch/
+
+# Course Brief (Preserved locally; ignored to prevent accidental public release of course material)
+docs/*.pdf

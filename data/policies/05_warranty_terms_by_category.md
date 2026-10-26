@@ -1,0 +1,3 @@
+# Nykaa Policy: Warranty Terms by Category
+
+Warranty protection varies across merchandise categories on the Nykaa platform. Electronic styling tools and electrical beauty appliances carry a standard manufacturer warranty ranging from 1 to 2 years covering internal circuitry defects. Apparel and footwear items are covered by a 30-day quality assurance warranty against manufacturing defects such as seam unraveling or sole detachment. Cookware and kitchen appliances in the Home category carry a 6-month brand warranty against finish peeling. Cosmetic and skincare products do not carry manufacturer repair warranties, but guarantee full product freshness with a minimum shelf-life validity of 6 to 12 months at the time of delivery.

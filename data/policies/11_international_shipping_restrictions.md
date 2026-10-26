@@ -1,0 +1,3 @@
+# Nykaa Policy: International Shipping Restrictions
+
+Nykaa dispatches cross-border shipments to select international jurisdictions including the United States, United Kingdom, Canada, United Arab Emirates, Singapore, and Australia. International shipments operate under a standard transit SLA of 10 to 15 business days, with customs tariffs, destination duties, and local clearance fees payable exclusively by the recipient. Under international civil aviation regulations, flammable materials, alcohol-based perfumes, pressurized aerosol sprays, and liquid skincare formulations exceeding 300 ml are strictly banned from air freight transit. Customers are responsible for verifying local country import restrictions prior to placing cross-border beauty orders.

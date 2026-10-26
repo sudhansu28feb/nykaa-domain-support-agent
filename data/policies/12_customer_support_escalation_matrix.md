@@ -1,0 +1,3 @@
+# Nykaa Policy: Customer-Support Escalation Matrix
+
+Customer grievances that cannot be resolved during first contact follow a structured three-tiered escalation framework. Level 1 frontline support representatives handle standard tracking inquiries and return authorisations within a 2-hour response resolution window. Inquiries involving delayed consignments or transit exceptions exceeding 3 business days are routed to Level 2 Operations Team Leads with a 24-hour turnaround SLA. Unresolved disputes, severe payment reconciliation disputes, or legal queries advance to Level 3 Management under the Principal Nodal Grievance Officer, ensuring formal resolution within 48 business hours.

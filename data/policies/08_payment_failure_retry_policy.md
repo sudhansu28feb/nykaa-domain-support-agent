@@ -1,0 +1,3 @@
+# Nykaa Policy: Payment-Failure and Retry Policy
+
+If a financial transaction fails during order placement but an amount is debited from the customer's account, banking gateways automatically reconcile within 24 to 48 business hours. Orders interrupted by gateway drops are held in a pending state for up to 30 minutes, during which a secure payment retry link is transmitted via SMS and email. Customers should avoid multiple simultaneous checkout attempts to prevent inadvertent duplicate card authorizations. In instances of verified duplicate charges, excess amounts are automatically reversed to the issuing bank within 3 to 5 business days without requiring manual support escalation.
