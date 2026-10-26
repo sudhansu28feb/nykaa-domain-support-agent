@@ -86,8 +86,8 @@ def test_escalation_score_bounds_and_formula():
 
 def test_escalation_threshold_and_dataset_percentile():
     """
-    Verify threshold = 0.72 corresponds to the 80th percentile of days_since_created (24 days)
-    for delayed orders.
+    Verify threshold = 0.72 requires delayed_shipment=True and days_since_created >= 9 days.
+    In the current generated dataset, 4 of 10 delayed orders meet this threshold.
     """
     delayed_orders = [o for o in ORDERS if o.delayed_shipment]
     non_delayed_orders = [o for o in ORDERS if not o.delayed_shipment]

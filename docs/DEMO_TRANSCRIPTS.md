@@ -2,6 +2,8 @@
 
 Generated via `python demo_pipeline.py` under deterministic offline `MOCK_LLM` execution.
 
+> **Academic Simulation Disclaimer:** The transcripts below record automated test and demonstration executions of the Nykaa Domain Support Agent operating in deterministic `MOCK_LLM` mode for the IIT Roorkee Agentic AI Capstone Project. All customer support policies, order numbers, customer profiles, and response texts derive from synthetic educational fixtures authored specifically for rubric evaluation; they do not represent real-world customer records or official corporate communications of FSN E-Commerce Ventures Ltd. (Nykaa).
+
 ```text
 Formula: escalation_score = 0.60 * is_delayed + 0.40 * (days_since_created / 30.0)
 Threshold: >= 0.72 triggers human escalation recommendation.

@@ -2,7 +2,7 @@
 
 A modular, deterministic customer support agent prototype built for the **IIT Roorkee Agentic AI Capstone Project** (E-commerce Track: Nykaa).
 
-> **Academic Disclaimer:** This repository is an educational capstone project developed for the IIT Roorkee Agentic AI program. It is a simulated application operating in deterministic mock mode and is not an official Nykaa product, nor is it connected to Nykaa's production systems or proprietary APIs. The project requirements and evaluation rubrics derive from the IIT Roorkee Capstone Project Brief; ground-truth customer support policies derive from the authored knowledge base in [`data/policies/`](data/policies/).
+> **Academic Disclaimer:** This repository is an educational capstone project developed for the IIT Roorkee Agentic AI program (E-commerce Track: Nykaa). It is a simulated prototype operating in deterministic mock mode and is not an official Nykaa product, nor is it connected to Nykaa's production systems or proprietary corporate APIs. All customer support policies, order records, customer details, and resolution responses derive from synthetic educational fixtures authored for rubric evaluation in [`data/policies/`](data/policies/) and [`data/orders.json`](data/orders.json).
 
 ## 1. Project Title and Overview
 
@@ -12,6 +12,22 @@ The system addresses customer inquiries regarding product return windows, cash-o
 
 In its default deterministic `MOCK_LLM` mode, all capstone capabilities execute locally without external LLM API keys or live outbound network access, assuming the local embedding model weights are cached.
 
+### Dataset Design Choices (Task 1)
+
+As required by the capstone specification for the Nykaa (E-commerce & Retail) track, the dataset generator ([`dataset.py`](dataset.py), [`nykaa_support/dataset.py`](nykaa_support/dataset.py)) produces a seeded, deterministic synthetic order collection reproducible by evaluators:
+
+| Parameter | Configuration / Generator Rule | Actual Sampled Value (`data/orders.json`) | Capstone Brief Mandate |
+| :--- | :--- | :--- | :--- |
+| **Random Seed** | `DEFAULT_SEED = 42` (`random.Random(42)`) | Deterministic seed `42` | Seeded, reproducible generator |
+| **Order Count** | `DEFAULT_ORDER_COUNT = 50` | `50` records | $\ge 40$ records |
+| **Product Categories** | 3 guaranteed each via round-robin (15 records) + uniform random choice (`rng.choice`) for remaining 35 | Apparel (12), Electronics (10), Home (10), Beauty (10), Footwear (8) | All 5 categories present ($\ge 3$ each) |
+| **Lifecycle Statuses** | 1 guaranteed each (5 records) + weighted draw for remaining 45 (`weights=[0.15, 0.25, 0.40, 0.10, 0.10]`) | Delivered (17), Shipped (13), Refunded (8), Placed (7), Returned (5) | All 5 statuses present ($\ge 1$ each) |
+| **Delayed Shipments** | `round(count * 0.20)` via `rng.sample` without replacement | `10 / 50` records (**20.0%**) | Between 10% and 30% |
+| **Order Value Range** | Configured catalog bounds: **₹445 to ₹4,899** across 25 products (reasoning: realistic Nykaa retail baskets) | **₹498 to ₹4,882** (Min: `NYK-10040` @ ₹498, Max: `NYK-10041` @ ₹4,882; Total: ₹85,841; AOV: ₹1,716.82) | Realistic price range with 1-sentence reasoning |
+| **Recency Window** | `rng.randint(0, 30)` | Min: 0 days, Max: 30 days | Integer between 0 and 30 |
+
+> **Category vs. Status Sampling Note:** Product categories are sampled uniformly (`rng.choice`) after initial round-robin guarantees without artificial category weights. Lifecycle statuses utilize explicit historical weights favoring `Delivered` (0.40) and `Shipped` (0.25) to model realistic post-purchase retail inquiry distributions.
+
 ---
 
 ## 2. Key Features
@@ -19,11 +35,11 @@ In its default deterministic `MOCK_LLM` mode, all capstone capabilities execute 
 - **Deterministic E-Commerce Dataset (Task 1):** 50 reproducible synthetic order records generated via `random.Random(42)` covering 5 categories (Apparel, Electronics, Home, Footwear, Beauty) and 5 lifecycle statuses (Placed, Shipped, Delivered, Returned, Refunded).
 - **Authored Policy Knowledge Base (Task 2):** 12 distinct, standalone ground-truth retail policy documents (2–5 sentences each) written in Markdown covering core retail domains.
 - **Dual Vector Chunking & Grounded Fallback (Tasks 3, 4, 5):** Fixed-size with overlap (36 chunks) vs. sentence-based chunking (49 chunks) indexed into separate ChromaDB collections using local `all-MiniLM-L6-v2` dense embeddings. Calibrated empirical fallback threshold (`0.35`) returning `"I don't know..."` on out-of-scope inquiries.
-- **Operational Order Lookup & Continuous Escalation (Task 6):** `check_order_status` function returning order value, lifecycle status, and a continuous score ($0.60 \times \text{delay} + 0.40 \times \text{recency} / 30.0$) with human escalation recommendation at $\ge 0.72$.
+- **Operational Order Lookup & Continuous Escalation (Task 6):** `check_order_status` function returning order value, lifecycle status, and a continuous score ($0.60 \times \text{delay} + 0.40 \times \text{recency} / 30.0$) with human escalation recommendation at $\ge 0.72$. The threshold is reached for delayed orders aged 9 days or more; in the current generated dataset, 4 of 10 delayed orders meet this threshold.
 - **Three-Agent CrewAI Orchestration (Task 7):** Specialized roles (Retrieval Agent, Lookup Agent, Response Composer) governed by the Principle of Least Autonomy and schema-driven argument dispatch.
 - **Multi-Turn Session Memory (Task 8):** In-memory per-session conversation tracking via LangChain (`InMemoryChatMessageHistory` / `RunnableWithMessageHistory`) resolving implicit order references while preserving complete cross-session isolation.
 - **Pydantic Structured Output Validation (Task 9):** Strict schema validation (`CrewSupportResponse`) enforcing structured metadata, bounded escalation scores ($\in [0.0, 1.0]$), and typed classifications.
-- **Input Guardrails & Output Validation (Task 10):** Regex-based PII sanitization (Indian mobile numbers, 16-digit payment cards) masking to `[PHONE_MASKED]` and `[CARD_MASKED]`, prompt injection override interception, and output context-faithfulness verification.
+- **Input Guardrails & Output Validation (Task 10):** Regex-based PII masking strictly for supported fixed-format patterns (Indian mobile numbers, 16-digit payment cards) to `[PHONE_MASKED]` and `[CARD_MASKED]`, prompt injection override interception, and output context-faithfulness verification.
 - **FastAPI HTTP & WebSocket Endpoints (Task 11):** Local ASGI service supporting `POST /ask`, `POST /add-document`, `GET /health`, and streaming `WS /ws/chat` with graceful disconnection handling.
 - **Structured JSON-Lines Request Logging (Task 12):** ELK-compatible audit log stream in `logs/audit_requests.jsonl` with request durations, trace IDs, and disk-level regex PII masking.
 - **15-Query Evaluation Benchmark (Task 13):** Automated evaluation pipeline scoring responses across Accuracy, Grounding, Completeness, and Safety using a deterministic LLM judge.
@@ -43,7 +59,7 @@ In its default deterministic `MOCK_LLM` mode, all capstone capabilities execute 
 | **Multi-Agent Orchestration** | CrewAI | `crewai == 1.15.30` | 3-agent cooperative execution (`.kickoff()`) |
 | **Compliance Review** | AutoGen | `autogen-agentchat == 0.7.5`, `autogen-core == 0.7.5` | 2-agent RoundRobinGroupChat review stage |
 | **Conversational Memory** | LangChain | `langchain`, `langchain-core` | Session chat history and contextual follow-up resolution |
-| **API Framework** | FastAPI & Uvicorn | `fastapi == 0.133.1`, `uvicorn == 0.44.0` | Local REST HTTP and WebSocket real-time chat service |
+| **API Framework** | FastAPI & Uvicorn | `fastapi == 0.162.0`, `uvicorn == 0.54.0` | Local REST HTTP and WebSocket real-time chat service |
 | **Data Validation** | Pydantic | `pydantic >= 2.0` | Request/response schemas, output validation, and models |
 | **Execution Engine** | Mock LLM Engine | `MOCK_LLM` (in-repo engine) | Deterministic local LLM simulation (no external API keys required) |
 
@@ -432,6 +448,8 @@ To launch the local Uvicorn ASGI server:
 | `GET` | `/health` | None | `HealthResponse` | Return service status, collections, and mock execution mode |
 | `WS` | `/ws/chat` | JSON messages | JSON messages | Real-time multi-turn conversation with graceful disconnect |
 
+> **Educational Response Simulation:** The sample responses below are generated under deterministic `MOCK_LLM` execution using synthetic educational templates and the authored knowledge base.
+
 ### Sample Usage: `POST /ask`
 
 **Request:**
@@ -546,12 +564,30 @@ $$\text{Precision} = \frac{|\text{Retrieved Unique} \cap \text{Ground Truth}|}{|
 **Selection Rationale:** The sentence-based chunking strategy (`nykaa_policies_sentence_based`) achieved **76.67% Mean Document Precision** compared to **46.67%** for fixed-size chunking (both achieved **100.00% Recall**). Sentence-level chunking isolates atomic policy rules without cross-topic bleeding from adjacent markdown headings. Consequently, `nykaa_policies_sentence_based` is configured as the primary knowledge base for the multi-agent crew.
 
 ### 15.3 Empirical Groundedness Calibration
-Cosine similarities between queries and retrieved chunks form the grounding signal under `MOCK_LLM`:
-- **In-Scope Query Cluster:** Similarities range from `0.4830` to `0.7786` (Mean: $\approx 0.61$).
-- **Out-of-Scope Query Cluster:** Similarities range from `0.0820` to `0.1353` (Mean: $\approx 0.10$).
-- **Empirical Cutoff:** **`THRESHOLD = 0.35`** sits squarely in the gap between the clusters with $>0.15$ margin on both sides.
-- **Refusal Response:** When top similarity falls below `0.35`, the engine returns:
+Cosine similarities between queries and retrieved chunks form the grounding signal under `MOCK_LLM`. Per Task 4 requirements, top-1 cosine similarities were empirically measured across 5 in-scope queries and 3 out-of-scope queries using [`nykaa_support/rag/calibrate.py`](nykaa_support/rag/calibrate.py):
+
+| Query ID | Query Text | Target Policy Document | Fixed-Size Overlap (Top-1 Sim) | Sentence-Based Chunking (Top-1 Sim) |
+| :---: | :--- | :---: | :---: | :---: |
+| **Q1** | *What is the return window for cosmetics and beauty products?* | `01_return_window_by_category` | `0.5998` | `0.5978` |
+| **Q2** | *How long does COD refund take via NEFT or Nykaa Wallet?* | `02_cod_refund_timelines` | `0.7539` | `0.6591` |
+| **Q3** | *What are the delivery SLAs for Tier 1 metro cities?* | `03_delivery_slas` | `0.5047` | `0.5918` |
+| **Q4** | *Am I eligible for free reverse pickup on returns?* | `04_reverse_pickup_eligibility` | `0.4830` | `0.5006` |
+| **Q5** | *What is the warranty coverage for electronic styling tools?* | `05_warranty_terms_by_category` | `0.6063` | `0.7786` |
+| **O1** | *How do I bake a chocolate sourdough bread at home?* | *(Out of Scope)* | `0.0964` | `0.0955` |
+| **O2** | *What is the current stock market price of Tesla or Bitcoin?* | *(Out of Scope)* | `0.1353` | `0.1288` |
+| **O3** | *Who won the 2022 FIFA World Cup soccer championship in Qatar?* | *(Out of Scope)* | `0.0892` | `0.0820` |
+
+#### Cluster Separation & Threshold Selection (Sentence-Based Strategy):
+- **In-Scope Query Cluster:** Top-1 similarities range from `0.5006` to `0.7786` (Mean: `0.6256`).
+- **Out-of-Scope Query Cluster:** Top-1 similarities range from `0.0820` to `0.1288` (Mean: `0.1021`).
+- **Cluster Gap:** $0.5006 - 0.1288 = \mathbf{0.3718}$ clear semantic separation.
+- **Calibrated Cutoff (`THRESHOLD = 0.35`):**
+  - Margin above highest out-of-scope: $0.35 - 0.1288 = \mathbf{+0.2212}$ ($> 0.22$).
+  - Margin below lowest in-scope: $0.5006 - 0.35 = \mathbf{+0.1506}$ ($> 0.15$).
+  - Both boundaries maintain $>0.15$ safety margin.
+- **Refusal Response (Simulated Runtime Output):** When top similarity falls below `0.35`, the engine returns the exact simulated refusal string:
   *"I don't know. The requested information is not covered by our official Nykaa policy documentation."*
+  *(Note: The policy knowledge base is an educational capstone fixture authored for rubric demonstration, not official Nykaa corporate policy documentation).*
 
 > **Qualification:** A threshold calibrated on a small benchmark is an empirical operational configuration; it does not constitute mathematical proof of complete grounding across all possible unconstrained user queries.
 
@@ -618,7 +654,7 @@ Draft responses synthesized by the CrewAI crew are reviewed by an independent Au
 2. **AutoGen Queue Event Loop Binding:**
    AutoGen 0.7.5 internal queues bind to the active event loop upon instantiation. To avoid cross-loop collision errors, `NykaaReviewStage` instantiates fresh team instances per request.
 3. **PII Masking Scope Boundary:**
-   The regex-based PII masker targets fixed-format Indian phone numbers and 16-digit payment card numbers. Natural-language customer names and unstructured postal delivery addresses are outside the scope of regex masking and require external NER models.
+   The regex-based PII masker targets fixed-format Indian phone numbers and 16-digit payment card numbers. Natural-language customer names, email addresses, and unstructured postal delivery addresses are outside the scope of regex masking and require external NER models. Regex pattern matching does not guarantee detection of all personal information.
 4. **In-Process Socket Interceptor Scope:**
    The offline verification test patches `socket.socket.connect` inside the Python runtime to verify that application components do not initiate external socket connections during test runs. It operates strictly within the Python process and is not an operating-system firewall or network-level packet filter.
 5. **Mock LLM Mode:**

@@ -346,7 +346,7 @@ def check_order_status(record_id: str, orders: Optional[List[OrderRecord]] = Non
     # Designed escalation formula: 60% delay signal + 40% recency signal
     escalation_score = round(0.60 * delay_signal + 0.40 * recency_norm, 4)
 
-    # Escalation recommended threshold: 0.72 corresponds to the 80th percentile of days_since_created (24 days) for delayed orders
+    # Escalation recommended threshold: 0.72 corresponds to delayed orders (0.60 base) with days_since_created >= 9 days (0.40 * 9/30 = 0.12)
     escalate_recommended = bool(escalation_score >= 0.72)
 
     return {
